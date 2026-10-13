@@ -1,0 +1,1 @@
+AF-STD conformance vectors: inputs (arms, trials, drugs, events; list columns JSON-encoded) and reference_estimates.csv from the reference implementation (AF 3.0, 3.2 and 3.3, outer=2, inner=6). Tolerances: psi_mean, psi_sd, af_hz 1e-4; p_af_lt_half 1e-3.

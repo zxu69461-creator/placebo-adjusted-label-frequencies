@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+db/*.duckdb
+db/*.duckdb.wal
+db/parquet/
+db/staging/
+cache/
+figures/
+manuscript/
