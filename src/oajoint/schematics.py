@@ -118,7 +118,7 @@ def fig5d_art(drug: str, rows: list[dict], zone_color: dict) -> art.Art:
     line says (per 100 patients: on placebo + added by the drug with its 95% interval, and what that means).
     Real rows of one drug; rows: term, drug, placebo, added, lo, hi, zone."""
     H5D = h5d(len(rows))
-    A = art.Art(W5D, H5D)
+    A = art.Art(W5D, H5D, kind="mockup")     # label lines: the content is text (no head-figure budgets)
     top = A.card(0.4, 0.6, W5D - 0.8, H5D - 1.2, header=(f"{drug} · per 100 patients", "vermilion"), shadow=True)
     # every row the same: term and verdict on the first line; bar, its numbers and (right, grey) what the label
     # says today on the second

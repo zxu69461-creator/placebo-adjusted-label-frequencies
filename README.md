@@ -1,6 +1,6 @@
 # Placebo-adjusted frequencies of adverse reactions listed on US drug labels
 
-Analysis code for the manuscript *"Placebo-Adjusted Frequencies of Nonserious Adverse Reactions Listed on US Prescription Drug Labels"* (submitted to *JAMA Network Open*).
+Analysis code for the manuscript *"Separating drug from placebo in 19,249 adverse reactions listed on US drug labels: a cross-sectional analysis of 9,759 randomized trials"* (submitted to *BMC Medicine*).
 
 For every drug–adverse event pair with placebo-controlled evidence on ClinicalTrials.gov, the code estimates the
 excess fraction (the proportion of reports with the drug in excess of the placebo frequency) and frequencies per 100
@@ -23,18 +23,19 @@ fitted, and applies it to the adverse reactions listed on current US Food and Dr
 | 32–34, 37, 64, 91 | Download ClinicalTrials.gov results (API v2), map drugs to ChEMBL, parse arms, adverse event groups, baseline and participant-flow modules, build placebo-controlled comparisons |
 | 41–68, 73–75 | Conventional (Mantel–Haenszel) estimates and linkage to current FDA labels (openFDA) and 2016 labels (SIDER) |
 | 80–83 | Empirical Bayes shrinkage (a comparator) |
-| 92–102, 106 | Hierarchical model, simulations with known truth, prediction benchmark (development windows and confirmation set) |
+| 92–102, 106 | Hierarchical model, simulations with known truth, prediction benchmark (development windows and temporal test set) |
 | 108–110c | Label analyses: expected proportions, organ systems, drug classes, frequencies per 100 patients, listing rules, sensitivity analyses |
 | 115–122 | External benchmarks (statin individual participant data, ACE inhibitor cough), complete-reporting refit, label subsections, discontinuation, trial characteristics |
 | 126–130b, 133–136 | Analyses added after internal review: refits (label-aware prior, trial subsets, half-sample and bootstrap refits), simulations, temporal calibration, positive controls, label audit, absolute frequencies without the posting threshold, formulation-matched subset |
-| 137–142 | Labeled use (phase 3 or 4 trials, approved indications, approval timing, highest dose), label-linkage recall, and the table of estimates for every listed reaction (Supplement 3) |
-| 123, 132 | Figures and eFigures of the manuscript |
+| 137–142 | Labeled use (phase 3 or 4 trials, approved indications, approval timing, highest dose), label-linkage recall, and the table of estimates for every listed reaction (Additional file 4) |
+| 152–154 | Analyses added after a third internal review: deletion of trials of data-rich reactions, prior-only probabilities and zero-excess weight, pivotal-like trials, add-on designs, disclaimer lists, coverage, benchmarks, absolute excess |
+| 123, 132, 151 | Figures of the manuscript and of Additional file 2 (151 draws the submitted versions) |
 
 Scripts whose names end in `prereg` record analysis rules (with thresholds and pass criteria) in the decision table
 `prov_decision` before the script that evaluates them is run; `python -m oajoint.manifest --verify` checks that every
 evaluated rule was registered first. Internal identifiers map to the paper as follows: `AF 3.3` is the hierarchical
 model, `AF 3.2` the model without its zero-excess component, `AF 1.0` conventional pooling, `B0`–`B7` the comparators
-of Figure 2, and `bench22_confirm33` the confirmation-set evaluation.
+of Fig. 4, and `bench22_confirm33` the evaluation in the temporal test set.
 
 ## Requirements
 
@@ -55,8 +56,8 @@ SIDER 4.1 and ChEMBL (including its drug indications). The paper used the downlo
 downloads will include newer trials and labels. Intermediate files cached by scripts 98, 100 and 106 go to
 `$OAJOINT_SCRATCH` (default `/tmp`).
 
-Figure scripts (`111`, `112`, `123`, `132`, `src/oajoint/figures.py`, `schematics.py`) use `figkit`, a plotting helper
-that is not part of this repository; all plotted values are in the study database and the supplements of the paper.
+Figure scripts (`111`, `112`, `123`, `132`, `151`, `src/oajoint/figures.py`, `schematics.py`) use `figkit`, a plotting helper
+that is not part of this repository; all plotted values are in the study database and the additional files of the paper.
 
 ### Reference implementation
 
@@ -69,7 +70,7 @@ pytest afstd/tests
 
 Code: MIT licence (`LICENSE`). Input data remain under their providers' terms: ClinicalTrials.gov (terms of use of
 the US National Library of Medicine), openFDA (CC0 1.0), SIDER 4.1 (CC BY-SA 4.0) and ChEMBL (CC BY-SA 3.0). Estimates
-for every listed adverse reaction are provided with the paper (Supplement 3).
+for every listed adverse reaction are provided with the paper (Additional file 4).
 
 ## Citation
 

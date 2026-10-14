@@ -75,7 +75,7 @@ def fig1(d):
     fig = fk.figure("double", height=105, profile=J.FIG_PROFILE)
     ax = fig.add_subplot(1, 1, 1)
     W, H = 158.0, 101.0
-    A = fk.art.Art(W, H)
+    A = fk.art.Art(W, H, kind="mockup")      # a flow diagram: its content is text (no head-figure budgets)
     mx, mw, ex, ew = 1.0, 86.0, 96.0, 61.0
     main = [
         [f"{f(n['ctgov'])} Randomized interventional studies with posted results",
