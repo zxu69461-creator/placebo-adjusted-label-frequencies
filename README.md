@@ -1,6 +1,6 @@
 # Placebo-adjusted frequencies of adverse reactions listed on US drug labels
 
-Analysis code for the manuscript *"Separating drug from placebo in 19,249 adverse reactions listed on US drug labels: a cross-sectional analysis of 9,759 randomized trials"* (submitted to *BMC Medicine*).
+Analysis code for the manuscript *"Hierarchical modelling of randomized trials quantifies placebo-attributable background across prescription drug labels"* (submitted to *PLOS Medicine*).
 
 For every drug–adverse event pair with placebo-controlled evidence on ClinicalTrials.gov, the code estimates the
 excess fraction (the proportion of reports with the drug in excess of the placebo frequency) and frequencies per 100
@@ -12,7 +12,7 @@ fitted, and applies it to the adverse reactions listed on current US Food and Dr
 | Path | What it is |
 |---|---|
 | `afstd/` | Stand-alone reference implementation of the hierarchical model and the prediction benchmark, with tests and conformance data. Start here to inspect or reuse the method. |
-| `src/oajoint/` | Shared modules: `af3.py` (hierarchical model), `bench.py` (prediction benchmark and scoring), `af2.py` (empirical Bayes comparator), `af_common.py`, `routes.py`, `provenance.py` (the only write path into the study database), `manifest.py` (audit), `jama.py`, `paper.py`, `figures.py`, `schematics.py`. |
+| `src/oajoint/` | Shared modules: `af3.py` (hierarchical model), `bench.py` (prediction benchmark and scoring), `af2.py` (empirical Bayes comparator), `af_common.py`, `routes.py`, `provenance.py` (the only write path into the study database), `manifest.py` (audit), `jama.py`, `paper.py`, `paper_v3.py`, `figures.py`, `schematics.py`, `schematics_v3.py`. |
 | `scripts/` | The analysis in run order (file-name numbers). |
 | `db/schema.sql` | Schema of the study database (DuckDB). |
 
@@ -23,19 +23,19 @@ fitted, and applies it to the adverse reactions listed on current US Food and Dr
 | 32–34, 37, 64, 91 | Download ClinicalTrials.gov results (API v2), map drugs to ChEMBL, parse arms, adverse event groups, baseline and participant-flow modules, build placebo-controlled comparisons |
 | 41–68, 73–75 | Conventional (Mantel–Haenszel) estimates and linkage to current FDA labels (openFDA) and 2016 labels (SIDER) |
 | 80–83 | Empirical Bayes shrinkage (a comparator) |
-| 92–102, 106 | Hierarchical model, simulations with known truth, prediction benchmark (development windows and temporal test set) |
+| 92–102, 106 | Hierarchical model, simulations with known truth, prediction benchmark (development windows and temporal validation set) |
 | 108–110c | Label analyses: expected proportions, organ systems, drug classes, frequencies per 100 patients, listing rules, sensitivity analyses |
 | 115–122 | External benchmarks (statin individual participant data, ACE inhibitor cough), complete-reporting refit, label subsections, discontinuation, trial characteristics |
 | 126–130b, 133–136 | Analyses added after internal review: refits (label-aware prior, trial subsets, half-sample and bootstrap refits), simulations, temporal calibration, positive controls, label audit, absolute frequencies without the posting threshold, formulation-matched subset |
-| 137–142 | Labeled use (phase 3 or 4 trials, approved indications, approval timing, highest dose), label-linkage recall, and the table of estimates for every listed reaction (Additional file 4) |
+| 137–142 | Labeled use (phase 3 or 4 trials, approved indications, approval timing, highest dose), label-linkage recall, and the table of estimates for every listed reaction (S1 Data) |
 | 152–154 | Analyses added after a third internal review: deletion of trials of data-rich reactions, prior-only probabilities and zero-excess weight, pivotal-like trials, add-on designs, disclaimer lists, coverage, benchmarks, absolute excess |
-| 123, 132, 151 | Figures of the manuscript and of Additional file 2 (151 draws the submitted versions) |
+| 123, 132, 151, 160, 163 | Figures of the manuscript and of its supporting information (160 and 163 draw the submitted versions) |
 
 Scripts whose names end in `prereg` record analysis rules (with thresholds and pass criteria) in the decision table
 `prov_decision` before the script that evaluates them is run; `python -m oajoint.manifest --verify` checks that every
 evaluated rule was registered first. Internal identifiers map to the paper as follows: `AF 3.3` is the hierarchical
 model, `AF 3.2` the model without its zero-excess component, `AF 1.0` conventional pooling, `B0`–`B7` the comparators
-of Fig. 4, and `bench22_confirm33` the evaluation in the temporal test set.
+of Fig 2, and `bench22_confirm33` the evaluation in the temporal validation set.
 
 ## Requirements
 
@@ -56,8 +56,8 @@ SIDER 4.1 and ChEMBL (including its drug indications). The paper used the downlo
 downloads will include newer trials and labels. Intermediate files cached by scripts 98, 100 and 106 go to
 `$OAJOINT_SCRATCH` (default `/tmp`).
 
-Figure scripts (`111`, `112`, `123`, `132`, `151`, `src/oajoint/figures.py`, `schematics.py`) use `figkit`, a plotting helper
-that is not part of this repository; all plotted values are in the study database and the additional files of the paper.
+Figure scripts (`111`, `112`, `123`, `132`, `151`, `160`, `163`, `src/oajoint/figures.py`, `schematics.py`) use `figkit`, a plotting helper
+that is not part of this repository; all plotted values are in the study database and the supporting information of the paper.
 
 ### Reference implementation
 
@@ -70,7 +70,7 @@ pytest afstd/tests
 
 Code: MIT licence (`LICENSE`). Input data remain under their providers' terms: ClinicalTrials.gov (terms of use of
 the US National Library of Medicine), openFDA (CC0 1.0), SIDER 4.1 (CC BY-SA 4.0) and ChEMBL (CC BY-SA 3.0). Estimates
-for every listed adverse reaction are provided with the paper (Additional file 4).
+for every listed adverse reaction are provided with the paper (S1 Data).
 
 ## Citation
 
